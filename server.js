@@ -12,11 +12,19 @@ app.get('/', function (req, res) {
     res.send('Hey Express !!');
 });
 
-//GET /parties
+//GET /parties/:q?
 
 app.get('/parties', function (req, res) {
 
-    res.json(parties);
+   var queryParams=req.query;
+    var filteredparties=parties;
+    if (queryParams.hasOwnProperty('q') && queryParams.q.length > 0) {
+        filteredTodos = _.filter(filteredparties, function (party) {
+            return party.name.toLowerCase().indexOf(queryParams.q.toLowerCase()) > -1;
+        });
+    }
+    res.json(filteredparties);
+
 
 });
 
@@ -137,6 +145,8 @@ app.put('/parties/:id', function (req, res) {
     res.json(matchedParty);
 
 });
+
+
 
 app.listen(PORT, function () {
     console.log('Express is started listening on PORT :' + PORT);
