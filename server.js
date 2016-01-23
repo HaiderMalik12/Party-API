@@ -73,6 +73,71 @@ app.delete('/parties/:id', function (req, res) {
 
 });
 
+//PUT /parties/:id
+
+app.put('/parties/:id', function (req, res) {
+
+    var partyId = parseInt(req.params.id, 10);
+    var matchedParty = _.findWhere(parties, {id: partyId});
+    var body = _.pick(req.body, 'name', 'type', 'credit', 'debit', 'balance', 'city');
+    var validateAtrributes = {};
+
+    if (!matchedParty) {
+
+        return res.status(400).send();
+    }
+
+    if (body.hasOwnProperty('name') && _.isString(body.name) && body.name.trim().length > 0) {
+        validateAtrributes.name = body.name;
+    }
+    else if (body.hasOwnProperty('name')) {
+        return res.status(400).send();
+    }
+    if (body.hasOwnProperty('type') && _.isString(body.type) && body.type.trim().length > 0) {
+        validateAtrributes.type = body.type;
+    }
+    else if (body.hasOwnProperty('type')) {
+        return res.status(400).send();
+    }
+    if (body.hasOwnProperty('city') && _.isString(body.city) && body.city.trim().length > 0) {
+        validateAtrributes.city = body.city;
+    }
+    else if (body.hasOwnProperty('city')) {
+        return res.status(400).send();
+    }
+    if (body.hasOwnProperty('credit') && _.isNumber(body.credit)) {
+        validateAtrributes.credit = body.credit;
+    }
+    else if (body.hasOwnProperty('credit') && !_.isNumber(body.credit)) {
+        return res.status(400).send();
+    }
+
+    else if (body.hasOwnProperty('credit')) {
+        return res.status(400).send();
+    }
+    if (body.hasOwnProperty('debit') && _.isNumber(body.debit)) {
+        validateAtrributes.debit = body.debit;
+    }
+    else if (body.hasOwnProperty('debit')) {
+        return res.status(400).send();
+    }
+    else if (body.hasOwnProperty('debit') && !_.isNumber(body.debit)) {
+        return res.status(400).send();
+    }
+    if (body.hasOwnProperty('balance') && _.isNumber(body.balance)) {
+        validateAtrributes.balance = body.balance;
+    }
+    else if (body.hasOwnProperty('balance')) {
+        return res.status(400).send();
+    }
+    else if (body.hasOwnProperty('balance') && !_.isNumber(body.balance)) {
+        return res.status(400).send();
+    }
+    _.extend(matchedParty, validateAtrributes);
+    res.json(matchedParty);
+
+});
+
 app.listen(PORT, function () {
     console.log('Express is started listening on PORT :' + PORT);
 });
