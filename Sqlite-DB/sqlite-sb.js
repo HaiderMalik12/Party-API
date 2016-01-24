@@ -1,6 +1,4 @@
-/**
- * Created by HaiderNazir on 1/23/2016.
- */
+
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize('undefined', 'undefined', 'undefined', {
     'dialect': 'sqlite',
@@ -28,8 +26,9 @@ var party = sequelize.define('party',{
     }
 
 });
-sequelize.sync({force:true}).then(function () {
-    console.log('Everything is synced !!');
+sequelize.sync({force:true})
+    .then(function () {
+    console.log('-----------------------Start Create Parties-------------------------------------------');
     party.create({
         name:'Haider Malik',
         type:'Yarn',
@@ -38,6 +37,51 @@ sequelize.sync({force:true}).then(function () {
         debit:1000.0,
         balance:1000.0
     });
-    console.log('Finished !!');
-    console.log(party);
+     return party.create({
+         name:'Shah g',
+         type:'dye',
+         city:'FSD',
+         credit:100.0,
+         debit:100.0,
+         balance:1000.0
+     });
+
+}).then(function(){
+   return party.create({
+       name:'Shah g',
+       type:'dye',
+       city:'FSD',
+       credit:100.0,
+       debit:100.0,
+       balance:1000.0
+   });
+}).then(function(){
+
+    return party.create({
+        name:'Shah g',
+        type:'dye',
+        city:'FSD',
+        credit:100.0,
+        debit:100.0,
+        balance:1000.0
+    });
+}).then(function(){
+    console.log('--------------------Start Find All ----------------------------------');
+    return party.findAll({
+        where:{
+            name:{
+                like:'%Shah g%'
+            }
+        }
+    })
+}).then(function(parties){
+    parties.forEach(function(party){
+        console.log(party.toJSON());
+    });
+    return party.findById('1');
+}).then(function(party){
+    console.log('----------------Start Find By Id -------------------------------------');
+    console.log(party.toJSON());
+}).catch(function(e){
+    console.log(e);
 });
