@@ -19,8 +19,9 @@ app.get('/parties', function (req, res) {
    var queryParams=req.query;
     var filteredparties=parties;
     if (queryParams.hasOwnProperty('q') && queryParams.q.length > 0) {
-        filteredTodos = _.filter(filteredparties, function (party) {
+        filteredparties = _.filter(filteredparties, function (party) {
             return party.name.toLowerCase().indexOf(queryParams.q.toLowerCase()) > -1;
+
         });
     }
     res.json(filteredparties);
